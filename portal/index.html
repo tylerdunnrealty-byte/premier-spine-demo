@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0E132A">
+<title>DEMO · Premier Spine Patient Portal — example data only</title>
+<meta name="description" content="Demo of a patient portal for Premier Spine, with fictional patients only.">
+<link rel="icon" href="assets/logo-dark.png">
+<link rel="stylesheet" href="shared.css">
+<link rel="stylesheet" href="start.css">
+</head>
+<body class="start">
+<a class="skip" href="#main">Skip to main content</a>
+<div class="demobar" id="demobar" role="region" aria-label="Demo notice"><span class="demotag" aria-hidden="true">DEMO</span> <span id="demotext">Demo — example data only, not a real patient portal</span></div>
+<header class="site" id="site">
+  <div class="wrap">
+    <a href="./" id="home-link" class="logolink"><img class="logo" src="assets/logo-dark.png" alt="Premier Spine — demo start" width="145" height="34"></a>
+    <span class="appname">Patient Portal · Demo</span>
+    <a class="hbtn" id="site-link" href="../">Premier Spine site</a>
+  </div>
+</header>
+<main id="main" tabindex="-1">
+
+<!-- ============ START ============ -->
+<section id="v-start" class="view" aria-labelledby="h-start">
+  <div class="wrap">
+    <div class="hero-s">
+      <p class="kicker">Demo · example data only</p>
+      <h1 id="h-start">Premier Spine Patient Portal</h1>
+      <p class="value" id="value">A patient portal with Premier Spine’s name on it, built around how your office already works: patients see what’s happening and what to do next, and your team sees what needs a person first.</p>
+      <div class="choices" role="group" aria-label="How do you want to explore?">
+        <button type="button" class="choice" id="go-patient" aria-expanded="false" aria-controls="pick-patient">
+          <span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>
+          <span class="ct"><b>Explore as a patient</b><span>Pick an example patient and see their portal.</span></span>
+          <span class="chev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></span>
+        </button>
+        <button type="button" class="choice" id="go-office" aria-expanded="false" aria-controls="pick-office">
+          <span class="ci" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M4 9h16"/><path d="M9 9v10"/></svg></span>
+          <span class="ct"><b>Explore as the office</b><span>See the work queue as a nurse, the front desk, Dr. Yakel or the practice manager.</span></span>
+          <span class="chev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></span>
+        </button>
+      </div>
+      <div class="picker" id="pick-patient" hidden>
+        <h2 id="h-pp">Choose an example patient</h2>
+        <p class="small muted">All patients are fictional. Each one is shown at a different moment in their care.</p>
+        <ul class="plist" id="plist" aria-labelledby="h-pp"></ul>
+      </div>
+      <div class="picker" id="pick-office" hidden>
+        <h2 id="h-po">Choose who you are in the office</h2>
+        <p class="small muted">Staff are fictional too. The list is the same; what each person can do differs.</p>
+        <ul class="plist" id="olist" aria-labelledby="h-po"></ul>
+      </div>
+      <p class="tourline"><button type="button" class="btn tourbtn" id="go-tour"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Take the 60-second tour</button></p>
+    </div>
+
+    <section class="card built" aria-labelledby="h-built" id="built">
+      <p class="kicker">Built for Premier</p>
+      <h2 id="h-built">Your portal, not a rented one</h2>
+      <div class="bgrid">
+        <div><h3>Your brand</h3><p>Premier Spine’s name, colours, phone number and care team on every screen.</p></div>
+        <div><h3>Your workflow</h3><p>Referrals, outside records, prior authorizations, intake, surgery prep and post-op check-ins follow the steps your office already uses.</p></div>
+        <div><h3>Your rules</h3><p>The practice sets the escalation rules, the approved instructions and the reminder timing. The portal doesn’t write medical advice.</p></div>
+      </div>
+      <p class="honest" id="honest"><b>What a real build needs:</b> a signed BAA, a HIPAA security review, a secure host and integration with your EHR and scheduling. None of that is in place in this demo.</p>
+    </section>
+
+    <section class="card about-s" aria-labelledby="h-about">
+      <h2 id="h-about">About this demo</h2>
+      <ul>
+        <li>Every patient, staff member, document and message is made up. Please don’t enter real health information.</li>
+        <li>The screens are recordings of the working prototype. Nothing you type here is sent or saved, and buttons that would save say so.</li>
+        <li>Faxes, text messages, insurer replies and follow-ups are simulated. The assistant is scripted; no AI model is connected.</li>
+        <li>No tracking, no analytics and no cookies; the only thing kept in your browser is the “Larger text” setting. Not production and not HIPAA-compliant.</li>
+      </ul>
+    </section>
+  </div>
+</section>
+
+<!-- ============ APP ============ -->
+<section id="v-app" class="view" hidden aria-labelledby="h-app">
+  <div class="appbar">
+    <button type="button" class="btn ghost sm" id="app-back"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Demo start</button>
+    <h1 id="h-app" class="apptitle"></h1>
+    <div class="seg" role="group" aria-label="Which side to show" id="seg">
+      <button type="button" data-side="portal" aria-pressed="true">Patient</button><button type="button" data-side="office" aria-pressed="false">Office</button><button type="button" data-side="both" aria-pressed="false" id="seg-both">Side by side</button>
+    </div>
+  </div>
+  <div class="tourbar" id="tourbar" hidden>
+    <div class="tb-top"><p class="kicker" id="tb-k"></p><div class="dots" id="tb-dots" aria-hidden="true"></div><button type="button" class="tb-x" id="tb-exit" aria-label="End tour"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+    <h2 id="tb-h"></h2>
+    <p id="tb-p" aria-live="polite"></p>
+    <div class="tb-prog" aria-hidden="true"><span id="tb-bar"></span></div>
+    <div class="row tb-ctl">
+      <button type="button" class="btn ghost sm" id="tb-prev">Back</button>
+      <button type="button" class="btn ghost sm" id="tb-play" aria-pressed="true">Pause</button>
+      <button type="button" class="btn sm" id="tb-next">Next</button>
+    </div>
+  </div>
+  <div class="frames" id="frames">
+    <div class="fw fw-portal" id="fw-portal"><iframe id="f-portal" title="Patient portal (demo recording)"></iframe></div>
+    <div class="fw fw-office" id="fw-office" hidden><iframe id="f-office" title="Office workspace (demo recording)"></iframe></div>
+  </div>
+</section>
+</main>
+<footer class="site-f wrap" id="foot">
+  <p>Premier Spine · 850 W Ironwood Dr, Suite 301, Coeur d’Alene, ID · <a href="tel:2087703536">(208) 770-3536</a></p>
+  <p class="fine">Demo with made-up people and data. Not a real patient portal.</p>
+</footer>
+<script src="demo-data.js"></script>
+<script src="start.js"></script>
+</body>
+</html>
