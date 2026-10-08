@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DEMO · Patient portal · Premier Spine (prototype)</title>
+<link rel="stylesheet" href="shared.css">
+</head>
+<body class="portal">
+<a class="skip" href="#main">Skip to main content</a>
+<div class="demobar" id="demobar" role="region" aria-label="Demo notice"><span class="demotag" aria-hidden="true">DEMO</span> <span id="demotext">Demo — example data only, not a real patient portal</span></div>
+<header class="site">
+  <div class="wrap">
+    <img class="logo" src="assets/logo-dark.png" alt="Premier Spine" width="145" height="34">
+    <span class="appname">Patient portal</span>
+    <a class="hbtn callus" id="callus" href="tel:2087703536" data-icon="phone" aria-label="Call us at (208) 770-3536"><span class="lbl-short">Call us</span><span class="lbl-num"> · (208) 770-3536</span></a>
+    <button class="hbtn" id="account-btn" type="button" data-icon="person" aria-haspopup="dialog" aria-controls="account"><span>Account</span></button>
+  </div>
+</header>
+<div class="protobar" id="protobar" role="region" aria-label="Prototype notice"><span id="banner">Prototype server · fictional data · not production · not HIPAA-compliant</span> <button type="button" class="linkbtn" id="about-open">About this demo</button></div>
+<nav class="main tabbar" id="nav" aria-label="Portal sections" hidden>
+  <div class="wrap">
+    <button type="button" data-view="home" data-icon="home"><span>Home</span></button>
+    <button type="button" data-view="visits" data-icon="visits"><span>Visits</span></button>
+    <button type="button" data-view="messages" id="nav-messages" data-icon="messages"><span>Messages</span></button>
+    <button type="button" data-view="records" data-icon="records"><span>Records</span></button>
+  </div>
+</nav>
+<main id="main" class="wrap" tabindex="-1"><p>Loading…</p></main>
+<footer class="site-f wrap">
+  <p>Premier Spine · 850 W Ironwood Dr, Suite 301, Coeur d’Alene, ID · <a href="tel:2087703536">(208) 770-3536</a></p>
+  <p>Prototype with made-up people and data. <button type="button" class="btn ghost sm" id="about-open-2">About this demo</button> <button type="button" class="btn ghost sm" id="whocall-open-2">Who do I call?</button></p>
+</footer>
+<dialog class="sheet" id="account" aria-labelledby="acct-h">
+  <h2 id="acct-h">Account</h2>
+  <p class="small muted" id="acct-who"></p>
+  <fieldset class="textsize" id="acct-ts"></fieldset>
+  <div class="menu">
+    <button type="button" class="menuitem" id="acct-settings" data-icon="settings"><span>Settings and sharing</span></button>
+    <button type="button" class="menuitem" id="acct-about" data-icon="list"><span>About this demo</span></button>
+    <button type="button" class="menuitem" id="signout" data-icon="signout"><span>Sign out</span></button>
+  </div>
+  <button type="button" class="btn ghost" id="acct-close">Close</button>
+</dialog>
+<dialog class="sheet" id="about" aria-labelledby="about-h">
+  <h2 id="about-h">About this demo</h2>
+  <p><b>Demo — example data only.</b> This is a prototype of a patient portal for Premier Spine. Every person, appointment, document and message is made up. Do not enter real health information. It is not production and not HIPAA-compliant.</p>
+  <h3>Works in this prototype</h3>
+  <ul id="about-real">
+    <li>Your answers, messages, call-back requests and intake drafts are stored by the prototype server and the office sees them as tasks.</li>
+    <li>What Home shows (status, checklist, the one thing to do) is worked out by the server from the office’s records.</li>
+    <li>Duplicate sends are blocked by the server.</li>
+  </ul>
+  <h3>Simulated (looks real, is not)</h3>
+  <ul id="about-sim">
+    <li>Faxes to and from other offices, text messages and their delivery receipts.</li>
+    <li>Insurance checks and approvals, and automatic follow-ups.</li>
+    <li>“Ask” answers come from a short list of saved office answers — not a person, a clinician or medical triage.</li>
+    <li>Sign-in has no password. There is no scheduling system: we can’t show open appointment times.</li>
+  </ul>
+  <h3>Not built</h3>
+  <ul id="about-not">
+    <li>Real identity checks, real messaging, real records, office hours and after-hours routing, and medical triage.</li>
+    <li>Wording about symptoms and surgery is example text waiting for Dr. Yakel’s review.</li>
+  </ul>
+  <p class="small muted" id="about-snap"></p>
+  <button type="button" class="btn" id="about-close">Close</button>
+</dialog>
+<dialog class="sheet" id="whocall" aria-labelledby="wc-h">
+  <h2 id="wc-h">Who do I call?</h2>
+  <div class="line"><b>Emergency</b><span>Call <a href="tel:911">911</a>.</span></div>
+  <div class="line"><b>Urgent spine symptoms</b><span>New weakness or numbness, or loss of bladder or bowel control: call the office now at <a href="tel:2087703536">(208) 770-3536</a>, or 911.</span></div>
+  <div class="line"><b>Everything else</b><span>Scheduling, billing, records or questions: <a href="tel:2087703536">(208) 770-3536</a>.</span></div>
+  <p class="fine">Office hours and the after-hours path are not set up in this prototype. The office must define them before real use.</p>
+  <button type="button" class="btn" id="wc-close">Close</button>
+</dialog>
+<script src="shared.js"></script>
+<script src="portal.js"></script>
+</body>
+</html>

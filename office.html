@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DEMO · Office workspace · Premier Spine (prototype)</title>
+<link rel="stylesheet" href="shared.css">
+</head>
+<body class="office">
+<a class="skip" href="#main">Skip to main content</a>
+<div class="demobar" id="demobar" role="region" aria-label="Demo notice"><span class="demotag" aria-hidden="true">DEMO</span> <span id="demotext">Demo — example data only, not a real patient portal</span></div>
+<header class="site">
+  <div class="wrap">
+    <img class="logo" src="assets/logo-dark.png" alt="Premier Spine" width="145" height="34">
+    <span class="appname">Office workspace <span class="small" id="who"></span></span>
+    <button class="hbtn" id="textsize" type="button" aria-pressed="false" data-icon="text"><span class="lbl">Larger text</span></button>
+    <button class="hbtn" id="signout" type="button" data-icon="signout" hidden><span class="lbl">Sign out</span></button>
+  </div>
+</header>
+<div class="protobar" id="banner" role="region" aria-label="Prototype notice">Prototype server · fictional data · not production · not HIPAA-compliant</div>
+<nav class="main" id="nav" aria-label="Office sections" hidden>
+  <div class="wrap">
+    <button type="button" data-view="queue" data-icon="board">Work queue</button>
+    <button type="button" data-view="notifications" data-icon="bell">Notifications</button>
+    <button type="button" data-view="reports" id="nav-reports" data-icon="chart" hidden>Reports</button>
+    <button type="button" data-view="audit" id="nav-audit" data-icon="list" hidden>Audit log</button>
+    <button type="button" data-view="settings" id="nav-settings" data-icon="settings" hidden>Settings</button>
+  </div>
+</nav>
+<main id="main" class="wrap" tabindex="-1"><p>Loading…</p></main>
+<footer class="site-f wrap"><p>Private office workspace · all people and data are fictional · replies are never sent automatically.</p></footer>
+<script src="shared.js"></script>
+<script src="office.js"></script>
+</body>
+</html>

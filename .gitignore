@@ -1,0 +1,27 @@
+# Runtime data (the server creates these; never commit them)
+data/
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+*.sqlite-*
+*.secret
+.env
+.env.*
+
+# Python
+__pycache__/
+*.pyc
+
+# Test output (logs, per-run results, screenshots)
+tests/logs/
+tests/*.results.json
+*-shots/
+shots/
+checkpoints/
+
+# Build output (rebuild with: python3 build_snapshot.py / python3 build_pages.py)
+snapshot.html
+publish/
