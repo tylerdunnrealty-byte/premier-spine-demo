@@ -99,6 +99,26 @@ def record():
             return o
         for K in out["keys"].values():
             K["get"] = {k: [v[0], polish(v[1])] for k, v in K["get"].items()}; K["assist"] = polish(K["assist"]); K["message"] = polish(K["message"])
+        # R20: example due times read as office hours (example data only). Recording-time-relative deadlines can land at night (e.g. 2:41 AM);
+        # move those to 9:00 AM (future) or 4:30 PM (past) Pacific, never crossing the recording time, so overdue/not-overdue is unchanged.
+        from datetime import datetime as _dt, timedelta as _td, timezone as _tz
+        from zoneinfo import ZoneInfo
+        PT = ZoneInfo("America/Los_Angeles"); R = _dt.now(_tz.utc); DUE = {"deadline", "follow_up_by", "due_at", "next_due_at", "next_check"}
+        def clamp(v):
+            try: t = _dt.strptime(v, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=_tz.utc)
+            except Exception: return v
+            l = t.astimezone(PT)
+            if 8 <= l.hour < 17: return v
+            if t > R: n = l.replace(hour=9, minute=0, second=0) + (_td(days=1) if l.hour >= 17 else _td(0))
+            else: n = l.replace(hour=16, minute=30, second=0) - (_td(days=1) if l.hour < 8 else _td(0))
+            n = n.replace(tzinfo=PT)   # re-resolve the Pacific offset on the new day
+            return n.astimezone(_tz.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        def office_hours(o):
+            if isinstance(o, list): return [office_hours(x) for x in o]
+            if isinstance(o, dict): return {k: (clamp(v) if k in DUE and isinstance(v, str) else office_hours(v)) for k, v in o.items()}
+            return o
+        for K in out["keys"].values():
+            K["get"] = {k: [v[0], office_hours(v[1])] for k, v in K["get"].items()}; K["assist"] = office_hours(K["assist"])
         blobs, index = [], {}   # store identical responses once
         for K in out["keys"].values():
             for k, v in K["get"].items():
