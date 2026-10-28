@@ -1,6 +1,6 @@
 /* Premier Spine portal prototype, preview18: calm "health app" design system.
    Off-white canvas, white rounded cards, soft shadows, system fonts only (no web-font downloads), Premier Spine navy as the accent,
-   cream and gold only for small highlights. Status colour is used only where someone needs to act.
+   cream and gold only for small highlights. Status color is used only where someone needs to act.
    The only fixed element is the patient portal's bottom tab bar on narrow screens. The body is padded by the bar's height, and
    scroll-padding keeps focused or scrolled-to controls clear of it, so it never hides content. */
 :root{
@@ -117,7 +117,7 @@ fieldset legend{font-weight:700;margin:0 0 10px;padding:0}
 .counter{font-size:.95rem;color:var(--muted);margin:6px 0 0}.counter.over{color:var(--bad);font-weight:700}
 .field{margin:0 0 16px}
 
-/* ---- chips (status pills). Neutral by default; colour only where action is needed ---- */
+/* ---- chips (status pills). Neutral by default; color only where action is needed ---- */
 .chip{display:inline-flex;align-items:center;gap:6px;padding:3px 11px;border-radius:999px;font-size:.85rem;font-weight:650;border:0;background:var(--fill);color:#3F3F4A;white-space:normal;line-height:1.5}
 .chip.ok{background:var(--okbg);color:var(--ok)}.chip.warn{background:var(--warnbg);color:var(--warn)}.chip.bad{background:var(--badbg);color:var(--bad)}.chip.info{background:var(--fill);color:#3F3F4A}
 .tag{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--golddeep);background:var(--cream);border:1px solid var(--creamline);border-radius:999px;padding:1px 9px;vertical-align:1px}
