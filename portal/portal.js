@@ -71,21 +71,34 @@
     }).then(function () { if (!location.hash || location.hash === '#/' ) location.hash = '#/home'; route(true); }).catch(function (e) { if (e.status === 401) showLogin(); else { PS.clear(main); main.appendChild(h('p', { class: 'istatus bad', text: PS.errText(e) })); } });
   }
 
+  var routeVersion = 0, routePath = null;
   function route(first) {
     if (!S.me) return;
-    var m = (location.hash || '#/home').replace(/^#\//, '').split('/'); var v = m[0] || 'home';
+    var path = location.hash || '#/home', changed = path !== routePath, version = ++routeVersion;
+    routePath = path;
+    var m = path.replace(/^#\//, '').split('/'); var v = m[0] || 'home';
     S.view = v; setNav(v === 'thread' ? 'messages' : v === 'intake' ? 'records' : (v === 'assist' || v === 'content') ? 'home' : v); chrome(true, v === 'intake');
-    if (v === 'messages' && m[1]) return renderThread(parseInt(m[1], 10));
-    if (v === 'content') return renderContent(parseInt(m[1], 10) || 0);
-    ({ home: renderHome, visits: renderVisits, records: renderRecords, messages: renderMessages, settings: renderSettings, intake: renderIntake, assist: renderAssist }[v] || renderHome)();
-    if (!first) { main.focus({ preventScroll: false }); }
+    var rendered;
+    if (v === 'messages' && m[1]) rendered = renderThread(parseInt(m[1], 10));
+    else if (v === 'content') rendered = renderContent(parseInt(m[1], 10) || 0);
+    else rendered = ({ home: renderHome, visits: renderVisits, records: renderRecords, messages: renderMessages, settings: renderSettings, intake: renderIntake, assist: renderAssist }[v] || renderHome)();
+    /* Reset only after the new view has rendered, in this portal's own window
+       (including when it is embedded). Same-view refreshes keep their position. */
+    return Promise.resolve(rendered).then(function () {
+      if (!changed || version !== routeVersion || !S.me) return;
+      var heading = main.querySelector('h1') || main;
+      heading.setAttribute('tabindex', '-1');
+      heading.focus({ preventScroll: true });
+      window.scrollTo(0, 0);
+    });
   }
 
   /* ---------- Home (preview19): three questions — What is happening? Do I need to do anything? How do I get help? ---------- */
   function loadHome(title, build) {
     document.title = 'DEMO · ' + title + ' · Premier Spine patient portal (prototype)';
-    PS.api('GET', '/api/p/home').then(function (d) { PS.clear(main); S.home = d; build(d, S.me.user.role === 'patient', S.me.patient_name.split(' ')[0]); })
-      .catch(function (e) { if (!authFail(e)) { PS.clear(main);   /* preview19 Prompt D: the error state offers a retry */
+    var version = routeVersion;
+    return PS.api('GET', '/api/p/home').then(function (d) { if (version !== routeVersion) return; PS.clear(main); S.home = d; build(d, S.me.user.role === 'patient', S.me.patient_name.split(' ')[0]); })
+      .catch(function (e) { if (version !== routeVersion) return; if (!authFail(e)) { PS.clear(main);   /* preview19 Prompt D: the error state offers a retry */
         var again = h('button', { type: 'button', class: 'btn', id: 'load-retry' }, 'Try again'); again.addEventListener('click', function () { again.disabled = true; again.textContent = 'Loading\u2026'; route(); });
         main.appendChild(h('div', { class: 'card', id: 'load-error' }, h('p', { class: 'istatus bad', role: 'alert', text: 'We couldn’t load this page: ' + PS.errText(e) + ' Nothing was changed. You can still call (208) 770-3536.' }), again)); } });
   }
@@ -94,7 +107,7 @@
     return h('p', { class: 'istatus', id: 'helper-note', text: 'You are signed in as ' + S.me.user.name + ', a helper. You see only what ' + fn + ' chose to share.' + (canIntake ? ' You can fill in the intake form for ' + fn + '; they will be asked to confirm it.' : ' You can’t send messages or change anything.') });
   }
   function renderHome() {
-    loadHome('Home', function (d, isP, fn) {
+    return loadHome('Home', function (d, isP, fn) {
       main.appendChild(h('h1', { class: 'hello', text: isP ? 'Hello, ' + fn : 'Viewing what ' + fn + ' shared with you' }));
       if (!isP) main.appendChild(helperNote(fn));
       var sv = d.pipeline && d.pipeline.surgery, urgent = d.next_action && d.next_action.key === 'urgent';
@@ -108,7 +121,7 @@
     });
   }
   function renderVisits() {
-    loadHome('Visits', function (d, isP, fn) {
+    return loadHome('Visits', function (d, isP, fn) {
       main.appendChild(h('h1', { text: 'Visits' }));
       if (!isP) main.appendChild(helperNote(fn));
       if (d.shared_scopes.appointments) main.appendChild(apptCard(d));
@@ -126,7 +139,7 @@
     });
   }
   function renderRecords() {
-    loadHome('Records', function (d, isP, fn) {
+    return loadHome('Records', function (d, isP, fn) {
       main.appendChild(h('h1', { text: 'Records' }));
       if (!isP) main.appendChild(helperNote(fn));
       if (!d.shared_scopes.status) { main.appendChild(h('p', { class: 'istatus', text: 'Status updates have not been shared with you.' })); return; }
@@ -511,7 +524,7 @@
   function renderIntake() {
     document.title = 'DEMO · Intake · Premier Spine patient portal (prototype)'; PS.clear(main);
     main.appendChild(h('p', { text: 'Loading your intake\u2026' }));
-    PS.api('GET', '/api/p/intake').then(function (f) {
+    return PS.api('GET', '/api/p/intake').then(function (f) {
       IN.form = f; PS.clear(main); var isP = f.viewer === 'patient', fn = f.patient_first;
       main.appendChild(h('div', { class: 'wiz-top' }, h('a', { class: 'toplink', href: '#/home', id: 'in-home' }, PS.icon('back'), 'Home'), h('h1', { text: isP ? 'Your intake form' : 'Intake form for ' + fn })));
       if (!isP) main.appendChild(h('p', { class: 'istatus', id: 'in-helper', text: 'You are filling this in for ' + fn + ' as their authorized helper. ' + fn + ' will be asked to check and confirm the answers before the office relies on them.' }));
@@ -831,7 +844,7 @@
   /* preview19 Prompt C: doAsk (the old quick-question card) was removed; questions go through "Ask about your visit". The /api/p/ask route stays for older clients. */
   function renderThread(id) {
     document.title = 'DEMO · Conversation · Premier Spine patient portal (prototype)';
-    PS.api('GET', '/api/p/threads/' + id).then(function (r) {
+    return PS.api('GET', '/api/p/threads/' + id).then(function (r) {
       PS.clear(main); var t = r.thread;
       main.appendChild(h('div', {}, h('p', {}, h('a', { class: 'btn ghost sm', href: '#/messages', text: '\u2190 All messages' })), h('h1', { text: t.category || 'Conversation' }),
         h('div', { class: 'card' }, h('p', {}, h('span', { class: 'chip ' + PS.chipFor(t.status), text: PS.statusMark[t.status] + t.status_text })),
@@ -989,7 +1002,7 @@
   /* the ORIGINAL approved-content record (own records only; the server returns 404 for anyone else's) */
   function renderContent(id) {
     document.title = 'DEMO \u00b7 Approved instructions \u00b7 Premier Spine patient portal (prototype)';
-    PS.api('GET', '/api/p/content/' + id).then(function (r) {
+    return PS.api('GET', '/api/p/content/' + id).then(function (r) {
       var c = r.content; PS.clear(main); window.scrollTo(0, 0);
       var warn = r.slot_status === 'conflict' ? 'There is more than one approved version of these instructions and they don\u2019t match. Please check with the team before relying on this one.'
         : c.stale ? 'These were due for review on ' + PS.fmtDay(c.review_by) + ' and haven\u2019t been re-approved. They may be out of date.' : null;
@@ -1047,3 +1060,4 @@
   /* ---------- start ---------- */
   PS.api('GET', '/api/p/me').then(function () { return boot(); }).catch(function (e) { showLogin(e.status === 401 ? '' : 'The prototype server did not answer: ' + PS.errText(e)); });
 })();
+

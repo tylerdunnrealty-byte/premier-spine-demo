@@ -131,10 +131,10 @@ section{padding:var(--sec) 0;position:relative}
    2. BUTTONS (one gold primary, one outline, one quiet link)
    ========================================================= */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:600 1rem/1 var(--sans);padding:17px 30px;border-radius:999px;text-decoration:none;border:0;cursor:pointer;white-space:nowrap;transition:transform .35s var(--spring),background .2s,box-shadow .25s}
-.btn:hover{transform:translateY(-2px)}
+.btn:hover{transform:translateY(-1px)}
 .btn:active{transform:scale(.96);transition-duration:.08s}
-.btn-gold{background:var(--gold);color:var(--navy);box-shadow:0 10px 28px rgba(176,152,66,.28)}
-.btn-gold:hover{background:var(--gold-hi);box-shadow:0 14px 34px rgba(176,152,66,.42)}
+.btn-gold{background:var(--gold);color:var(--navy);box-shadow:0 3px 10px rgba(14,19,42,.12)}
+.btn-gold:hover{background:var(--gold-hi);box-shadow:0 5px 14px rgba(14,19,42,.16)}
 .btn-sm{padding:12px 20px;font-size:.9rem}
 .quiet{color:var(--on-dark);font-weight:500;font-size:.98rem;text-decoration:none;border-bottom:1px solid rgba(201,178,95,.6);padding-bottom:2px;transition:color .2s,border-color .2s}
 .quiet:hover{color:#fff;border-color:var(--gold-hi)}
@@ -496,7 +496,15 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:48px;bac
   .site-header .btn{display:none}
   .spine-stage{height:min(460px,112vw);min-height:360px}
   .help-panel{position:fixed;z-index:140;left:0;right:0;top:auto;bottom:0;width:auto;max-height:86svh;border-radius:var(--radius) var(--radius) 0 0;border-bottom:0;background:rgba(14,19,42,.97);transform:translateY(105%);transition:transform .5s cubic-bezier(.2,.8,.2,1),opacity .3s,visibility 0s .5s}
-  .spine-sec.open .help-panel{transform:none;transition-delay:.3s,.3s,0s}
+  .spine-sec.open{position:relative;z-index:150}
+  .spine-sec.open .help-panel{transform:none;transition-delay:0s}
+  .spine-help-open .callbar{display:none}
+  /* One scroll surface keeps help text, warnings and actions reachable at short heights. */
+  .help-panel{max-height:calc(100svh - 16px);overflow-y:auto;overscroll-behavior:contain}
+  .hp-head{position:sticky;top:0;z-index:2;background:var(--navy)}
+  .hp-scroll{flex:none;overflow:visible}
+  .hp-foot{flex:none}
+  .hp-cta .btn{white-space:normal;flex-wrap:wrap;line-height:1.35}
   .scrim{display:block;position:fixed;inset:0;z-index:135;background:rgba(6,9,22,.55);opacity:0;visibility:hidden;transition:opacity .35s,visibility 0s .35s}
   .spine-sec.open .scrim{opacity:1;visibility:visible;transition-delay:0s}
   .hp-title{font-size:1.7rem}
@@ -633,10 +641,10 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:48px;bac
 @media (prefers-reduced-motion:reduce){ .hero-spine{transition:none} }
 
 /* =========================================================
-   16. ROUND 7 — NAV "LOG IN" (DEMO) + LOGIN MODAL / BOTTOM SHEET + PORTAL PREVIEW
+   16. PORTAL DEMO LINK + OFFICE PREVIEW MODAL
    Quiet outlined pill beside the gold Call pill (Call stays the primary CTA). Demo only: see the HIPAA comment in the HTML.
    ========================================================= */
-.nav-login{font:500 .9rem/1 var(--sans);color:var(--on-dark);background:transparent;border:1px solid rgba(255,255,255,.42);border-radius:999px;padding:11px 18px;cursor:pointer;white-space:nowrap;transition:border-color .2s,color .2s,background .2s}
+.nav-login{text-decoration:none;font:500 .9rem/1 var(--sans);color:var(--on-dark);background:transparent;border:1px solid rgba(255,255,255,.42);border-radius:999px;padding:11px 18px;cursor:pointer;white-space:nowrap;transition:border-color .2s,color .2s,background .2s}
 .nav-login:hover{border-color:var(--gold-hi);color:#fff;background:rgba(255,255,255,.06)}
 .nav-menu-btn,.only-menu{display:none}
 .nav-right{gap:22px}
@@ -1281,12 +1289,11 @@ html.lg-lock{overflow:hidden;padding-right:var(--lg-sbw,0px)}
         <li><a href="#help">First visit</a></li>
         <li><a href="#team">Team</a></li>
         <li><a href="#contact">Contact</a></li>
-        <li><a href="portal/">Patient Portal (demo)</a></li>
         <li class="only-menu"><a href="#" data-seeit-open>See it work</a></li>
         <li class="only-menu"><a class="menu-call" href="tel:2087703536">Call (208) 770-3536</a></li>
       </ul>
-      <!-- ROUND 7: DEMO "Log in" (quiet outlined pill; the gold Call button stays the primary CTA). Opens the preview modal at the end of the page. No real authentication. -->
-      <button type="button" class="nav-login" data-login-open aria-haspopup="dialog" aria-controls="login">Log in</button>
+      <!-- One patient entry. This is a fictional demo, not an authentication form. -->
+      <a class="nav-login" href="portal/">Portal demo</a>
       <a class="btn btn-gold btn-sm" href="tel:2087703536">Call (208) 770-3536</a>
       <button type="button" class="nav-menu-btn" id="nav-menu-btn" aria-expanded="false" aria-controls="nav-menu"><span class="nm-ic" aria-hidden="true"><i></i><i></i></span><span>Menu</span></button>
     </div>
@@ -1482,7 +1489,7 @@ html.lg-lock{overflow:hidden;padding-right:var(--lg-sbw,0px)}
     <div class="hp-foot">
     <div class="hp-cta">
       <a class="btn btn-gold" id="hp-call" href="tel:2087703536"><span id="hp-call-t">Whenever you&rsquo;re ready</span> <b>&middot; (208) 770-3536</b></a>
-      <a class="quiet" id="hp-ask" href="#contact">Ask Dr. Yakel</a>
+      <a class="quiet" id="hp-ask" href="#contact">Contact our team</a>
     </div>
     <p class="hp-bring">Helpful to bring: past imaging, a list of your medications, and your questions.</p>
     <p class="nodx">This isn&rsquo;t a diagnosis. It&rsquo;s general information to help you decide what to ask.</p>
@@ -1592,7 +1599,7 @@ html.lg-lock{overflow:hidden;padding-right:var(--lg-sbw,0px)}
       <div class="label">Whenever you&rsquo;re ready</div>
       <h2 id="cta-h">Ready when you are.</h2>
       <p class="lede">One call is all it takes to get started. No referral necessary.</p>
-      <p class="cta-row"><a class="btn btn-gold" href="tel:2087703536">Call (208) 770-3536</a><a class="quiet" href="#contact">Or send a message</a></p>
+      <p class="cta-row"><a class="btn btn-gold" href="tel:2087703536">Call (208) 770-3536</a><a class="quiet" href="#contact">Office details</a></p>
     </div>
   </div>
 </section>
@@ -1611,18 +1618,11 @@ html.lg-lock{overflow:hidden;padding-right:var(--lg-sbw,0px)}
       </div>
     </div>
     <div class="panel reveal">
-      <h3>Request a consult</h3>
-      <!-- FORM WIRING: this form is NOT functional. To make it work, set action="" to your HIPAA-appropriate form
-           endpoint/service (or a backend handler) and method="post", and remove the preventDefault demo in the script.
-           HIPAA NOTE: use a HIPAA-compliant form vendor/BAA if you collect any patient information. -->
-      <form id="consult-form" action="#" method="post" novalidate>
-        <label>Name<input type="text" name="name" autocomplete="name" required></label>
-        <label>Phone<input type="tel" name="phone" autocomplete="tel" required></label>
-        <label>Message (general only)<textarea name="message" placeholder="How can we help?"></textarea></label>
-        <button class="btn btn-gold" type="submit">Send request</button>
-        <p class="hipaa">Please don&rsquo;t include medical details here. Call the office to discuss your care.</p>
-        <p class="form-msg" id="form-msg" role="status" aria-live="polite"></p>
-      </form>
+      <div class="label">LET’S GET STARTED</div>
+      <h3>Talk with our team</h3>
+      <p>Call Premier Spine to ask a question or arrange your first visit. We’ll help you understand the next step.</p>
+      <a class="btn btn-gold" href="tel:2087703536">Call (208) 770-3536</a>
+      <p class="hipaa"><strong>Website preview:</strong> online appointment requests aren’t connected. Nothing can be submitted here. Please call the office to discuss your care.</p>
     </div>
   </div>
 </section>
@@ -1633,6 +1633,7 @@ html.lg-lock{overflow:hidden;padding-right:var(--lg-sbw,0px)}
   <div class="wrap foot">
     <img src="assets/logo-white.png" alt="Premier Spine" width="140" height="32" loading="lazy">
     <p>This website is for general information and does not provide medical advice. Individual results vary. If you are experiencing a medical emergency, call 911. &copy; <span id="yr">2026</span> Premier Spine.</p>
+    <a class="foot-link" href="#" data-login-open aria-haspopup="dialog" aria-controls="login">Office demos</a>
     <a class="foot-link" href="#" data-seeit-open>See it work</a>
   </div>
 </footer>
@@ -1756,10 +1757,10 @@ html.lg-lock{overflow:hidden;padding-right:var(--lg-sbw,0px)}
 </div>
 
 <!-- =====================================================================================================================
-     ROUND 7 — DEMO LOGIN + PORTAL PREVIEW (no real authentication, no data handling)
+     OFFICE DEMO CHOOSER + LEGACY PREVIEWS (no real authentication, no data handling)
      IMPORTANT: a real patient/employee portal requires HIPAA-compliant authentication and hosting, plus signed Business Associate Agreements (BAAs)
-     with every vendor that touches PHI (host, auth provider, email/SMS, analytics). NOTHING here collects, stores or transmits credentials:
-     the forms never submit (preventDefault), make no network calls, and clear their fields as soon as they are used, closed or left.
+     with every vendor that touches PHI (host, auth provider, email/SMS, analytics). This chooser has no credential fields.
+     Role buttons open fictional office previews without authentication or network calls.
      All portal content below is clearly-labelled EXAMPLE data (no real names, no PHI). Post-op wording is generic placeholder text.
      MEDICAL COPY — needs Dr. Yakel review (the "Example" post-op timeline titles).
      ===================================================================================================================== -->
@@ -1767,58 +1768,28 @@ html.lg-lock{overflow:hidden;padding-right:var(--lg-sbw,0px)}
   <div class="lg-card" role="dialog" aria-modal="true" aria-labelledby="lg-title" data-view="login">
     <span class="lg-grab" aria-hidden="true"></span>
 
-    <!-- VIEW 1: log in -->
+    <!-- VIEW 1: office demo chooser -->
     <div class="lg-view" id="lg-view-login">
       <div class="lg-head">
-        <h2 id="lg-title">Log in</h2>
-        <button type="button" class="lg-x" data-login-close aria-label="Close log in"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M3 3l10 10M13 3L3 13"/></svg></button>
+        <h2 id="lg-title">Office demos</h2>
+        <button type="button" class="lg-x" data-login-close aria-label="Close office demos"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M3 3l10 10M13 3L3 13"/></svg></button>
       </div>
-      <div class="lg-tabs" role="tablist" aria-label="Log in as">
-        <button type="button" role="tab" id="lg-tab-patient" aria-selected="true" aria-controls="lg-panel-patient" data-role="patient">Patients</button>
-        <button type="button" role="tab" id="lg-tab-employee" aria-selected="false" aria-controls="lg-panel-employee" data-role="employee" tabindex="-1">Employees</button>
+      <div class="lg-tabs" role="tablist" aria-label="Explore an office role">
+        <button type="button" role="tab" id="lg-tab-employee" aria-selected="true" aria-controls="lg-panel-employee" data-role="employee">Front desk</button>
         <button type="button" role="tab" id="lg-tab-physician" aria-selected="false" aria-controls="lg-panel-physician" data-role="physician" tabindex="-1">Physician</button>
       </div>
 
-      <div class="lg-panel" role="tabpanel" id="lg-panel-patient" aria-labelledby="lg-tab-patient">
-        <p class="lg-line">Your plan, forms and appointments in one place.</p>
-        <form class="lg-form" data-role="patient" novalidate autocomplete="off" action="javascript:void(0)">
-          <label for="lg-p-email">Email</label>
-          <input id="lg-p-email" type="email" inputmode="email" autocomplete="off" autocapitalize="none" spellcheck="false" data-1p-ignore data-lpignore="true" placeholder="you@example.com">
-          <label for="lg-p-pass">Password</label>
-          <input id="lg-p-pass" type="password" autocomplete="off" data-1p-ignore data-lpignore="true">
-          <div class="lg-row"><button type="button" class="lg-forgot" data-forgot>Forgot password?</button></div>
-          <p class="lg-msg" role="status" aria-live="polite"></p>
-          <button type="submit" class="btn btn-gold lg-submit">Log in</button>
-        </form>
-      </div>
-
-      <div class="lg-panel" role="tabpanel" id="lg-panel-employee" aria-labelledby="lg-tab-employee" hidden>
+      <div class="lg-panel" role="tabpanel" id="lg-panel-employee" aria-labelledby="lg-tab-employee">
         <p class="lg-line">Your team&rsquo;s daily tasks in one place.</p>
-        <form class="lg-form" data-role="employee" novalidate autocomplete="off" action="javascript:void(0)">
-          <label for="lg-e-email">Work email</label>
-          <input id="lg-e-email" type="email" inputmode="email" autocomplete="off" autocapitalize="none" spellcheck="false" data-1p-ignore data-lpignore="true" placeholder="you@example.com">
-          <label for="lg-e-pass">Password</label>
-          <input id="lg-e-pass" type="password" autocomplete="off" data-1p-ignore data-lpignore="true">
-          <div class="lg-row"><button type="button" class="lg-forgot" data-forgot>Forgot password?</button></div>
-          <p class="lg-msg" role="status" aria-live="polite"></p>
-          <button type="submit" class="btn btn-gold lg-submit">Log in</button>
-        </form>
+        <button type="button" class="btn btn-gold lg-submit" data-preview-role="employee">Explore front desk demo</button>
       </div>
 
       <div class="lg-panel" role="tabpanel" id="lg-panel-physician" aria-labelledby="lg-tab-physician" hidden>
         <p class="lg-line">Your day, briefed in five minutes.</p>
-        <form class="lg-form" data-role="physician" novalidate autocomplete="off" action="javascript:void(0)">
-          <label for="lg-d-email">Work email</label>
-          <input id="lg-d-email" type="email" inputmode="email" autocomplete="off" autocapitalize="none" spellcheck="false" data-1p-ignore data-lpignore="true" placeholder="you@example.com">
-          <label for="lg-d-pass">Password</label>
-          <input id="lg-d-pass" type="password" autocomplete="off" data-1p-ignore data-lpignore="true">
-          <div class="lg-row"><button type="button" class="lg-forgot" data-forgot>Forgot password?</button></div>
-          <p class="lg-msg" role="status" aria-live="polite"></p>
-          <button type="submit" class="btn btn-gold lg-submit">Log in</button>
-        </form>
+        <button type="button" class="btn btn-gold lg-submit" data-preview-role="physician">Explore physician demo</button>
       </div>
 
-      <p class="lg-demo"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="8" r="6.2"/><path d="M8 7.2v3.6M8 5.1v.1"/></svg><span>Demo preview &mdash; not connected to patient records. Nothing you type is sent or saved.</span></p>
+      <p class="lg-demo"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="8" r="6.2"/><path d="M8 7.2v3.6M8 5.1v.1"/></svg><span>Fictional examples only. No account or password is needed. Nothing here is connected to patient records.</span></p>
       <p class="lg-seeit-row"><button type="button" class="lg-seeit" data-seeit-open>See how it works &rarr;</button></p>
     </div>
 
@@ -3055,7 +3026,8 @@ initSpine(false);
     if(from&&from.closest&&!from.closest('.help-panel')) lastChip=from;
     var first=!isOpen; cur=key; fill(key);
     if(first){ meter.value=0; setMeter(0); }
-    sec.classList.add('open'); isOpen=true;
+    sec.classList.add('open'); root.classList.add('spine-help-open'); isOpen=true;
+    $('.callbar').setAttribute('inert','');
     panel.removeAttribute('inert'); panel.setAttribute('aria-hidden','false');
     if(mobileMQ.matches) root.classList.add('lock');
     withSpine(function(s){ s.focusRegion(DATA[key].region,DATA[key].tip||null); });
@@ -3064,7 +3036,8 @@ initSpine(false);
     var r=sec.getBoundingClientRect(); if(!mobileMQ.matches && (r.top<60||r.bottom>innerHeight+20)) sec.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});
   }
   function closePanel(restoreFocus){
-    if(!isOpen) return; isOpen=false; sec.classList.remove('open');
+    if(!isOpen) return; isOpen=false; sec.classList.remove('open'); root.classList.remove('spine-help-open');
+    $('.callbar').removeAttribute('inert');
     panel.setAttribute('inert',''); panel.setAttribute('aria-hidden','true'); root.classList.remove('lock');
     $$('[data-spin]').forEach(function(c){ c.classList.remove('on'); c.setAttribute('aria-pressed','false'); });
     withSpine(function(s){ s.releaseFocus(); });
@@ -3262,16 +3235,16 @@ initSpine(false);
     };
   })();
 
-  /* ---------- ROUND 7: DEMO login modal + portal preview ----------
+  /* ---------- Office demo chooser + legacy portal previews ----------
      DEMO ONLY: no authentication, no network calls, nothing is stored. Real portal = HIPAA-compliant auth/hosting + BAAs (see the comment in the HTML).
-     Forms never submit; fields are cleared on submit, back, close and open. Focus trap, Esc, inert page behind, focus returns to the opener. */
+     No credential fields. Focus trap, Esc, inert page behind, focus returns to the opener. */
   (function(){
     var ov=$('#login'); if(!ov) return;
     var card=$('.lg-card',ov), vLogin=$('#lg-view-login'), vPortal=$('#lg-view-portal');
-    var tabs=$$('.lg-tabs [role=tab]',ov), panels=$$('.lg-panel[role=tabpanel]',ov), forms=$$('.lg-form',ov);
+    var tabs=$$('.lg-tabs [role=tab]',ov), panels=$$('.lg-panel[role=tabpanel]',ov);
     var behind=['#main','.site-header','footer','.callbar','#hero-spine'].map(function(s){return $(s)}).filter(Boolean);
-    var opener=null, role='patient', isOpen=false;
-    function clearAll(){ forms.forEach(function(f){ f.reset(); $('.lg-msg',f).textContent=''; }); }
+    var opener=null, role='employee', isOpen=false;
+    function clearAll(){ /* No credential fields or personal data in this demo chooser. */ }
     function setRole(r,focus){
       role=r;
       tabs.forEach(function(t){ var on=t.dataset.role===r; t.setAttribute('aria-selected',on?'true':'false'); t.tabIndex=on?0:-1; if(on&&focus) t.focus(); });
@@ -3316,7 +3289,7 @@ initSpine(false);
       if(window.__closeNavMenu) window.__closeNavMenu();
       var sbw=innerWidth-document.documentElement.clientWidth; document.documentElement.style.setProperty('--lg-sbw',sbw+'px'); document.documentElement.classList.add('lg-lock');
       behind.forEach(function(el){ el.setAttribute('inert',''); });
-      setRole(r||'patient'); showLogin(false); ov.hidden=false; void ov.offsetWidth; ov.classList.add('in');
+      setRole(r||'employee'); showLogin(false); ov.hidden=false; void ov.offsetWidth; ov.classList.add('in');
       var t=$('.lg-tabs [role=tab][aria-selected=true]',ov); t&&t.focus({preventScroll:true});
     }
     function close(noFocus){
@@ -3327,8 +3300,8 @@ initSpine(false);
       document.documentElement.classList.remove('lg-lock');
       if(!noFocus&&opener&&opener.focus) opener.focus({preventScroll:true});
     }
-    $$('[data-login-open]').forEach(function(b){ b.addEventListener('click',function(){ open(b,'patient'); }); });
-    $$('[data-login-close]',ov).forEach(function(b){ b.addEventListener('click',close); });
+    $$('[data-login-open]').forEach(function(b){ b.addEventListener('click',function(e){ e.preventDefault(); open(b,'employee'); }); });
+    $$('[data-login-close]',ov).forEach(function(b){ b.addEventListener('click',function(){ close(); }); });
     $('[data-login-back]',ov).addEventListener('click',function(){ if(card.dataset.from==='physician') showPortal('physician'); else showLogin(true); });
     ov.addEventListener('mousedown',function(e){ if(e.target===ov) close(); });
     tabs.forEach(function(t,i){
@@ -3338,9 +3311,8 @@ initSpine(false);
         if(n>=0){ e.preventDefault(); setRole(tabs[n].dataset.role,true); }
       });
     });
-    forms.forEach(function(f){
-      f.addEventListener('submit',function(e){ e.preventDefault(); e.stopPropagation(); showPortal(f.dataset.role); });   // never submits; credentials are discarded
-      $('[data-forgot]',f).addEventListener('click',function(){ $('.lg-msg',f).textContent='Password reset isn\u2019t available in this demo preview.'; });
+    $$('[data-preview-role]',ov).forEach(function(b){
+      b.addEventListener('click',function(){ showPortal(b.dataset.previewRole); });
     });
     // focus trap + Esc
     ov.addEventListener('keydown',function(e){
@@ -3517,10 +3489,10 @@ initSpine(false);
     return { open:open, step:function(){return step;}, playing:function(){return playing;} };
   })();
 
-  /* ---------- demo form handler: replace with real submission (see comment on the form) ---------- */
-  $('#consult-form').addEventListener('submit',function(e){ e.preventDefault(); $('#form-msg').textContent='Thank you. This demo form is not connected yet; please call (208) 770-3536.'; });
+  // Contact is call-first until an approved request service is connected.
   $('#yr').textContent=new Date().getFullYear();
 })();
 </script>
 </body>
 </html>
+
