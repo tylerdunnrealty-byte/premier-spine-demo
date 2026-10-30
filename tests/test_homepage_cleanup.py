@@ -14,10 +14,10 @@ class Elements(HTMLParser):
 
 class HomepageCleanupTests(unittest.TestCase):
     def setUp(self): self.elements = Elements().items
-    def test_one_patient_portal_entry(self):
-        links = [a for t,a in self.elements if t == 'a' and a.get('href') == 'portal/']
-        self.assertEqual(len(links), 1)
-        self.assertEqual(links[0].get('class'), 'nav-login')
+    def test_no_portal_entry(self):
+        self.assertFalse([a for t,a in self.elements if t == 'a' and 'portal' in a.get('href','')])
+        for token in ('data-login-open', 'data-seeit-open', 'data-preview-role', 'nav-login', 'id="login"', 'id="seeit"'):
+            self.assertNotIn(token, HTML)
     def test_no_credential_fields(self):
         self.assertFalse([a for t,a in self.elements if t == 'input' and a.get('type') in ('password','email')])
         self.assertNotIn('data-forgot', HTML)
@@ -27,14 +27,9 @@ class HomepageCleanupTests(unittest.TestCase):
         self.assertNotIn('Thank you. This demo form', HTML)
         self.assertIn('online appointment requests aren’t connected', HTML)
         self.assertIn('Nothing can be submitted here', HTML)
-    def test_office_roles_remain_reachable(self):
-        roles = [a.get('data-preview-role') for t,a in self.elements if 'data-preview-role' in a]
-        self.assertEqual(roles, ['employee','physician'])
-        self.assertIn("showPortal(b.dataset.previewRole)", HTML)
-        self.assertIn("open(b,'employee')", HTML)
     def test_changed_id_references_exist(self):
         ids = [a['id'] for _,a in self.elements if 'id' in a]
-        for name in ('login','lg-title','lg-view-login','lg-view-portal','lg-tab-employee','lg-panel-employee','lg-tab-physician','lg-panel-physician','help-panel','hp-close','hp-title'):
+        for name in ('nav-menu','nav-menu-btn','help-panel','hp-close','hp-title'):
             self.assertEqual(ids.count(name), 1, name)
         for _,a in self.elements:
             for ref in a.get('aria-controls','').split(): self.assertIn(ref, ids)
@@ -47,9 +42,13 @@ class HomepageCleanupTests(unittest.TestCase):
         self.assertIn('max-height:calc(100svh - 16px);overflow-y:auto', HTML)
         self.assertIn("$('.callbar').setAttribute('inert','')", HTML)
         self.assertIn("$('.callbar').removeAttribute('inert')", HTML)
-    def test_modal_close_restores_opener(self):
-        self.assertIn("b.addEventListener('click',function(){ close(); });", HTML)
-        self.assertIn('opener.focus({preventScroll:true})', HTML)
+    def test_legacy_routes_are_static_redirects(self):
+        for name in ('index.html', 'portal.html', 'office.html'):
+            route=(Path(__file__).resolve().parents[1]/'portal'/name).read_text()
+            self.assertIn('http-equiv="refresh" content="0; url=../"', route)
+            self.assertIn('<a href="../">Continue to Premier Spine</a>', route)
+            self.assertNotIn('<script', route)
+            self.assertNotIn('<iframe', route)
     def test_warning_and_brand_retained(self):
         self.assertIn('loss of bladder or bowel control', HTML)
         self.assertIn('This isn&rsquo;t a diagnosis.', HTML)
@@ -65,3 +64,4 @@ class HomepageCleanupTests(unittest.TestCase):
                 subprocess.run(['node','--check',str(p)],check=True,capture_output=True)
 
 if __name__ == '__main__': unittest.main(verbosity=2)
+
