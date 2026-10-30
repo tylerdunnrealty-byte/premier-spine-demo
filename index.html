@@ -695,6 +695,18 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:48px;bac
 .help-panel .redflag{color:var(--on-dark);line-height:1.5}
 @media(max-width:640px){.hp-head{gap:8px}.hp-tabs{gap:5px}.hp-tabs .chip{padding:9px 11px;font-size:.82rem}}
 
+
+/* Public care explorer: a compact entry point, not another questionnaire. */
+.care-intro{max-width:710px;margin:18px auto 0;color:var(--slate);font-size:1.05rem;line-height:1.65}
+.care-explorer{margin:46px auto 8px;max-width:1000px;border-top:1px solid var(--hair);padding-top:32px}
+.care-heading{display:flex;align-items:baseline;justify-content:space-between;gap:20px}.care-heading h3{font-size:1.7rem}
+.care-options{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--hair);border-radius:var(--radius);overflow:hidden;background:var(--white);margin:16px 0}
+.care-options article{position:relative;padding:26px 28px}.care-options article+article{border-left:1px solid var(--hair);background:var(--sand)}
+.care-number{font-family:var(--mono);font-size:.8rem;color:var(--slate)}.care-options h4{font-family:var(--serif);font-weight:500;font-size:1.45rem;line-height:1.2;margin:10px 0}
+.care-options p{color:var(--slate);font-size:1rem;max-width:35em}.care-link{display:inline-flex;gap:12px;align-items:center;min-height:44px;font-weight:600;text-underline-offset:5px}.care-link:hover{color:var(--gold-deep)}
+.care-services summary{cursor:pointer;padding:12px 0;min-height:44px;color:var(--slate)}.care-services .pills{justify-content:flex-start;margin-top:14px}
+@media(max-width:700px){.care-heading{display:block}.care-options{grid-template-columns:1fr}.care-options article+article{border-left:0;border-top:1px solid var(--hair)}.care-options article{padding:23px}.care-intro{text-align:left}}
+
 </style>
 </head>
 
@@ -732,7 +744,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:48px;bac
     <div class="hero-inner">
       <p class="eyebrow rise" style="--d:.05s">Premier Spine &middot; Coeur&nbsp;d&rsquo;Alene</p>
       <h1 class="rise" style="--d:.12s">Back to your kind of&nbsp;Idaho.</h1>
-      <p class="sub rise" style="--d:.24s">Clear answers about your spine. A care plan built around your life.</p>
+      <p class="sub rise" style="--d:.24s">Understand what’s causing your pain. Explore your options. Find a path forward with Dr. Yakel and Sarah Frank.</p>
       <div class="hero-cta rise" style="--d:.34s">
         <a class="btn btn-gold" href="tel:2087703536">Call (208) 770-3536</a>
         <p class="hero-note">No referral necessary</p>
@@ -803,24 +815,26 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:48px;bac
   <div class="wrap">
     <div class="center reveal">
       <div class="label">Your first visit</div>
-      <h2>What to expect.</h2>
+      <h2>Surgery is one option.<br>Understanding your options comes first.</h2><p class="care-intro">We start by listening, reviewing your symptoms and imaging, and discussing the treatments that fit your situation. When surgery is appropriate, we help you understand why, what it involves, and what alternatives to consider.</p>
     </div>
     <div class="strip reveal">
       <ol class="strip-steps">
         <li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A15 15 0 0 1 4 5a1 1 0 0 1 1-1z"/></svg></span><div><b>Call us</b><span>No referral needed. Bring any imaging and a list of your medications, if you have them.</span></div></li>
         <li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 10h8"/></svg></span><div><b>We listen</b><span>We start with your story, then go over your imaging with you.</span></div></li>
-        <li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 12l2 2 4-4"/></svg></span><div><b>We talk options</b><span>You hear your choices in plain language, starting with the most conservative.</span></div></li>
+        <li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 12l2 2 4-4"/></svg></span><div><b>We talk options</b><span>We discuss appropriate nonsurgical and surgical options, with room for your questions.</span></div></li>
       </ol>
       <p class="strip-foot"><b>No referral needed &mdash; just call.</b> <a class="strip-link" href="tel:2087703536">(208) 770-3536</a></p>
     </div>
 
-    <div class="treat reveal">
-      <div class="label">Everything we treat</div>
-      <ul class="pills">
-        <li>Minimally invasive spine surgery</li><li>Robotic spine surgery</li><li>Spinal stenosis</li><li>Neck and back pain</li>
-        <li>Deformity correction</li><li>SI joint surgery</li><li>Carpal &amp; cubital tunnel release</li>
-        <li>Vertebral compression fracture</li><li>Spinal trauma surgery</li><li>Epidural steroid injections</li>
-      </ul>
+    <div class="care-explorer reveal" id="care" aria-labelledby="care-title">
+      <div class="care-heading"><div class="label">Explore your care</div><h3 id="care-title">A little understanding.<br>A more informed conversation.</h3></div>
+      <div class="care-options">
+        <article><span class="care-number" aria-hidden="true">01</span><h4>Not sure where to start?</h4><p>You don’t need a diagnosis to ask a question. Start with where it hurts.</p><a class="care-link" href="#spine">Explore your symptoms <span aria-hidden="true">↗</span></a></article>
+        <article><span class="care-number" aria-hidden="true">02</span><h4>Understanding neck fusion</h4><p>A clear, visual introduction to ACDF: the anatomy, the procedure, and questions worth asking.</p><a class="care-link" href="procedures/acdf/">Explore ACDF <span aria-hidden="true">↗</span></a></article>
+      </div>
+      <details class="care-services"><summary>Conditions and treatments we discuss</summary><ul class="pills">
+        <li>Minimally invasive spine surgery</li><li>Robotic spine surgery</li><li>Spinal stenosis</li><li>Neck and back pain</li><li>Deformity correction</li><li>SI joint surgery</li><li>Carpal &amp; cubital tunnel release</li><li>Vertebral compression fracture</li><li>Spinal trauma surgery</li><li>Epidural steroid injections</li>
+      </ul></details>
     </div>
   </div>
 </section>
